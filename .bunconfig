@@ -1,0 +1,6 @@
+{
+  "bun-version": "latest",
+  "scripts": {
+    "preinstall": "npm install --legacy-peer-deps"
+  }
+}
