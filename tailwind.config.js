@@ -17,6 +17,9 @@ module.exports = {
         '33': '8.25rem', // Nuevo tamaño de padding/margin 33
         '34': '8.5rem', // Nuevo tamaño de padding/margin 34
       },
+      width: {
+        '38': '9.5rem', // Nuevo tamaño de ancho 38
+      },
     },
   },
   plugins: [],

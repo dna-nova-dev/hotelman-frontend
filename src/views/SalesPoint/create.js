@@ -35,10 +35,10 @@ const CreateView = () => {
       setGuestFormData(null);
     }
   };
-
+  /*passtrought fromAdmin value pls*/
   return (
     <>
-      <Navbar title="inquilinos" isAuthenticated={true} />
+      <Navbar title="inquilinos" isAuthenticated={true} fromAdmin={false} />
       <div className="px-33 bg-gray-50">
         <TabNavigation
           onCreate={true}

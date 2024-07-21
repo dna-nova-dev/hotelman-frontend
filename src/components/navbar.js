@@ -3,7 +3,7 @@ import AuthenticatedActions from './authenticatedactions';
 import UserWidget from './userwidget';
 import { Link } from 'react-router-dom';
 
-const Navbar = ({ title, isAuthenticated, onRegister }) => {
+const Navbar = ({ title, isAuthenticated, onRegister, fromAdmin }) => {
   return (
     <div className="w-full flex justify-between items-center px-10 py-4 bg-white shadow-md">
       <div className="flex items-center">
@@ -11,7 +11,7 @@ const Navbar = ({ title, isAuthenticated, onRegister }) => {
           <img className="h-20 w-auto" src="/images/logo.svg" alt="Logo" />
         </Link>
         {!isAuthenticated && <h2 className="ml-6 font-semibold text-gray-900 text-lg">{title}</h2>} {/* Mostrar título solo si no está autenticado */}
-        {isAuthenticated && <AuthenticatedActions className="ml-6" onPage={title} />} {/* Mostrar acciones solo si está autenticado */}
+        {isAuthenticated && <AuthenticatedActions className="ml-6" onPage={title} fromAdmin={fromAdmin}/>} {/* Mostrar acciones solo si está autenticado */}
       </div>
       <div className="flex items-center ml-auto">
         <UserWidget isAuthenticated={isAuthenticated} onRegister={onRegister}/>

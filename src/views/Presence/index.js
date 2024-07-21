@@ -14,10 +14,10 @@ const Presence = () => {
   const handleTabChange = (tab) => {
     dispatch(setActiveTab(tab)); // Despachar la acción para actualizar el tab activo en Redux
   };
-
+  /*passtrought fromAdmin value pls*/
   return (
     <>
-      <Navbar title="prensencia" isAuthenticated={true} />
+      <Navbar title="presencia" isAuthenticated={true} fromAdmin={false} /> 
       <div className="px-33 bg-gray-50">
         <TabNavigation
           onlyPagination={true}
