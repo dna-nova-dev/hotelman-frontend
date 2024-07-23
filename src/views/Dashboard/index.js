@@ -1,26 +1,35 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Navbar from '../../components/navbar';
-import { setActiveTab } from '../../features/tab/tabSlice'; // Ajusta la ruta según tu estructura de archivos
 import FloatingButtons from '../../components/utils/floating/FloatingButtons';
 import DashView from '../../components/utils/DashView';
+import SalesView from './salesview';
+import Presence from '../Presence';
+import CreateView from '../SalesPoint/create';
 
 const Dashboard = () => {
-  const dispatch = useDispatch();
-  const activeTab = useSelector((state) => state.tab); // Obtener el tab activo desde Redux
+  const lastClickedButton = useSelector((state) => state.floatingbuttons.lastClickedButton);
 
-  // Función para manejar el cambio de tab
-  const handleTabChange = (tab) => {
-    dispatch(setActiveTab(tab)); // Despachar la acción para actualizar el tab activo en Redux
-  };
+  let ViewComponent;
+
+  switch (lastClickedButton) {
+    case 'Punto de venta':
+      ViewComponent = SalesView;
+      break;
+    case 'Informes':
+      ViewComponent = DashView;
+      break;
+    default:
+      ViewComponent = DashView;
+  }
 
   return (
     <>
-      <Navbar title="informes" isAuthenticated={true} />
-      <div className="flex">
+      <Navbar title="Panel administrativo" fromAdmin={true} />
+      <div className="flex bg-gray-50">
         <FloatingButtons />
-        <div className="flex-1 pl-52"> {/* Ajusta el margen para separación */}
-          <DashView />
+        <div className="flex-1 pl-1"> {/* Ajusta el margen para separación */}
+          <ViewComponent />
         </div>
       </div>
     </>
