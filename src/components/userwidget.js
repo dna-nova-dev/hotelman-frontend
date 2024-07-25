@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { LogOut } from 'lucide-react';
+import Config from '../Config';
 
 const UserWidget = ({ onRegister }) => {
   const token = Cookies.get('Authorize');
@@ -30,7 +31,7 @@ const UserWidget = ({ onRegister }) => {
     if (user && hasLoaded) {
       const checkProfileImage = async () => {
         try {
-          const response = await fetch('http://localhost:8000/profile-picture', {
+          const response = await fetch(Config.API_URL + '/profile-picture', {
             method: 'GET',
             credentials: 'include',
           });
@@ -57,7 +58,7 @@ const UserWidget = ({ onRegister }) => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:8000/logout', {
+      const response = await fetch( Config.API_URL + '/logout', {
         method: 'POST',
         credentials: 'include',
       });
@@ -113,7 +114,7 @@ const UserWidget = ({ onRegister }) => {
           ) : (
             <img
               className="h-16 w-16 ml-2 rounded-full"
-              src={profileImageAvailable ? 'http://localhost:8000/profile-picture' : '/images/guest.svg'}
+              src={profileImageAvailable ? Config.API_URL+ '/profile-picture' : '/images/guest.svg'}
               alt="Profile"
             />
           )}

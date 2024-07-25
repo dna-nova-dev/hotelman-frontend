@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Navbar from '../../components/navbar';
 import { useAccountUser } from '../../middleware/AccountUserContext';
 import { useNavigate } from 'react-router-dom';
+import Config from '../../Config';
 
 const Login = () => {
   const { saveUser } = useAccountUser();
@@ -20,7 +21,7 @@ const Login = () => {
     console.log('Remember Me:', rememberMe);
 
     try {
-      const response = await fetch('http://localhost:8000/login', {
+      const response = await fetch(Config.API_URL + '/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

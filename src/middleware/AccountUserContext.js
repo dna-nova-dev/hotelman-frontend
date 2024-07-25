@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import CryptoJS from 'crypto-js';
+import Config from '../Config';
 
 // Crear el contexto
 const AccountUserContext = createContext();
@@ -27,7 +28,7 @@ export const AccountUserProvider = ({ children }) => {
     const token = Cookies.get('Authorize');
     if (token) {
       try {
-        const response = await fetch('http://localhost:8000/user', {
+        const response = await fetch(Config.API_URL + '/user', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

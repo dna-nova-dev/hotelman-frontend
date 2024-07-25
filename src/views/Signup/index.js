@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from '../../components/navbar';
+import Config from '../../Config';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -57,7 +58,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:8000/signup', {
+      const response = await fetch(Config.API_URL + '/signup', {
         method: 'POST',
         body: formDataToSend,
       });
