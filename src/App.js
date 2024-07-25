@@ -17,6 +17,7 @@ import React from 'react';
 function App() {
   const token = Cookies.get('Authorize');
   const [initialRoute, setInitialRoute] = React.useState(null);
+  console.log(process.env)
   React.useEffect(() => {
     if (token) {
       try {
