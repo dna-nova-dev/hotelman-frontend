@@ -1,20 +1,62 @@
 import React, { useState } from 'react';
 import Navbar from '../../components/navbar';
-import Footer from '../../components/footer';
+import { useAccountUser } from '../../middleware/AccountUserContext';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const { saveUser } = useAccountUser();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Hook para redirigir
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login attempt', { email, password, rememberMe });
+
+    console.log('Submitting login form...');
+    console.log('Email:', email);
+    console.log('Password:', password);
+    console.log('Remember Me:', rememberMe);
+
+    try {
+      const response = await fetch('http://localhost:8000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: email, password }),
+        credentials: 'include', // Permitir el envío y recepción de cookies
+      });
+
+      console.log('Response Status:', response.status);
+      console.log('Response Headers:', response.headers);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Login Successful:', data);
+        // Guardar el usuario en el contexto y localStorage/sessionStorage
+        saveUser({ ...data, username: email }, rememberMe);
+        // Redirigir a la página principal o dashboard
+        navigate('/');
+      } else if (response.status === 401) {
+        console.log('Login Failed: Incorrect credentials');
+        // Manejar el error de autenticación
+        setError('Credenciales incorrectas');
+      } else {
+        console.log('Login Failed: Other Error', response.status);
+        // Manejar otros errores
+        setError('Error en el inicio de sesión');
+      }
+    } catch (error) {
+      console.error('Login Error:', error);
+      setError('Error en el inicio de sesión');
+    }
   };
 
   return (
     <>
-      <Navbar title="Iniciar Sesion" isAuthenticated={false}/>
+      <Navbar title="Iniciar Sesion" isAuthenticated={false} />
       <div className="flex min-h-screen bg-gray-50">
         <div className="flex flex-1 flex-col justify-center px-4 py-2 sm:px-6 lg:px-8 xl:px-24 lg:items-center lg:justify-start lg:pt-20">
           <div className="w-full max-w-sm lg:w-96">
@@ -59,7 +101,7 @@ const Login = () => {
                     <input
                       id="remember-me"
                       name="remember-me"
-                      type="radio"
+                      type="checkbox"
                       className="h-4 w-4 rounded-full border-gray-300 text-indigo-600 focus:ring-indigo-500"
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
@@ -69,6 +111,8 @@ const Login = () => {
                     </label>
                   </div>
                 </div>
+
+                {error && <div className="text-red-600 text-sm">{error}</div>}
 
                 <div className='py-8'>
                   <button

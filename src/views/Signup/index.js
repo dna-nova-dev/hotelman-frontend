@@ -25,7 +25,7 @@ const Signup = () => {
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProfilePicture(URL.createObjectURL(file));
+      setProfilePicture(file);
     }
   };
 
@@ -37,14 +37,42 @@ const Signup = () => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     if (file) {
-      setProfilePicture(URL.createObjectURL(file));
+      setProfilePicture(file);
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted', formData);
-    // Handle form submission logic here
+    
+    const formDataToSend = new FormData();
+    formDataToSend.append('nombres', formData.nombres);
+    formDataToSend.append('apellidos', formData.apellidos);
+    formDataToSend.append('correo', formData.correo);
+    formDataToSend.append('numeroCelular', formData.numeroCelular);
+    formDataToSend.append('contrasena', formData.contrasena);
+    formDataToSend.append('confirmarContrasena', formData.confirmarContrasena);
+    formDataToSend.append('curp', formData.curp);
+    if (profilePicture) {
+      formDataToSend.append('profilePicture', profilePicture);
+    }
+
+    try {
+      const response = await fetch('http://localhost:8000/signup', {
+        method: 'POST',
+        body: formDataToSend,
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log('Success:', result);
+      // Manejar el resultado de la respuesta aquí
+    } catch (error) {
+      console.error('Error:', error);
+      // Manejar el error aquí
+    }
   };
 
   const handleQuickStartChange = () => {
@@ -53,11 +81,11 @@ const Signup = () => {
 
   return (
     <>
-      <Navbar title="Registro" isAuthenticated={false} onRegister={true}/>
+      <Navbar title="Registro" isAuthenticated={false} onRegister={true} />
       
       <div className="flex min-h-screen bg-gray-50 justify-center items-center px-8 sm:px-6 lg:px-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-5/6 max-w-7xl">
-          <div className="md:col-span-2 lg:col-span-2 w-full"> {/* Columna izquierda (formulario) que ocupa 2/3 del espacio en pantallas medianas y grandes */}
+          <div className="md:col-span-2 lg:col-span-2 w-full">
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -188,7 +216,7 @@ const Signup = () => {
               </div>
             </form>
           </div>
-          <div className="md:col-span-1 lg:col-span-1 w-full"> {/* Columna derecha (drag and drop) que ocupa 1/3 del espacio en pantallas medianas y grandes */}
+          <div className="md:col-span-1 lg:col-span-1 w-full">
             <div
               className="flex flex-col h-3/5"
               onDragOver={handleDragOver}
@@ -197,20 +225,51 @@ const Signup = () => {
               <label className="block text-sm font-medium text-gray-700 mb-4">
                 Foto de perfil
               </label>
-              <div className="mt-1 flex flex-col justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md h-full">
-                <div className="space-y-1 text-center">
-                  {profilePicture ? (
-                    <img src={profilePicture} alt="Profile" className="mx-auto h-32 w-32 object-cover rounded-full" />
-                  ) : (
-                    <img src="./images/icons/dragzone.svg" className="mx-auto h-25 w-25 text-gray-400" />
-                  )}
-                  <div className="flex text-lg text-gray-600">
-                    <label htmlFor="file-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-primary hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                      <span className='font-semibold'> Arrastra y Suelta</span>
-                      <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={handleFileUpload} />
-                    </label>
-                  </div>
-                </div>
+              <div className="mt-1 flex flex-col justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                {profilePicture ? (
+                  <>
+                    <img
+                      src={URL.createObjectURL(profilePicture)}
+                      alt="Profile Preview"
+                      className="h-40 w-40 object-cover mb-2"
+                    />
+                    <p className="text-xs text-gray-500">{profilePicture.name}</p>
+                  </>
+                ) : (
+                  <>
+                    <svg
+                      className="mx-auto h-12 w-12 text-gray-400"
+                      stroke="currentColor"
+                      fill="none"
+                      viewBox="0 0 48 48"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M28 8H20a2 2 0 00-2 2v8H8a2 2 0 00-2 2v8a2 2 0 002 2h8v8a2 2 0 002 2h8a2 2 0 002-2v-8h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8v-8a2 2 0 00-2-2z"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    <div className="mt-4 flex text-sm text-gray-600">
+                      <label
+                        htmlFor="file-upload"
+                        className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                      >
+                        <span>Sube una foto</span>
+                        <input
+                          id="file-upload"
+                          name="file-upload"
+                          type="file"
+                          className="sr-only"
+                          onChange={handleFileUpload}
+                        />
+                      </label>
+                      <p className="pl-1">o arrastra y suelta</p>
+                    </div>
+                    <p className="text-xs text-gray-500">PNG, JPG, GIF hasta 10MB</p>
+                  </>
+                )}
               </div>
             </div>
           </div>
