@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from '../../components/navbar';
-import Config from '../../config';
+import Config from '../../Config';
 
 const Signup = () => {
   const [formData, setFormData] = useState({

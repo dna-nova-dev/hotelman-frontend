@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { LogOut } from 'lucide-react';
-import Config from '../config';
+import Config from '../Config';
 
 const UserWidget = ({ onRegister }) => {
   const token = Cookies.get('Authorize');

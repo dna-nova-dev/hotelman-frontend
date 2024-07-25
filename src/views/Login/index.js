@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Navbar from '../../components/navbar';
 import { useAccountUser } from '../../middleware/AccountUserContext';
 import { useNavigate } from 'react-router-dom';
-import Config from '../../config';
+import Config from '../../Config';
 
 const Login = () => {
   const { saveUser } = useAccountUser();
