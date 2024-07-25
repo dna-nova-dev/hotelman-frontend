@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import CryptoJS from 'crypto-js';
-import Config from '../Config';
+import Config from '../config';
 
 // Crear el contexto
 const AccountUserContext = createContext();
