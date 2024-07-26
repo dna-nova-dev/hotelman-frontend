@@ -4,6 +4,7 @@ import { useAccountUser } from '../../middleware/AccountUserContext';
 import { useNavigate } from 'react-router-dom';
 import Config from '../../Config';
 import { ClipLoader } from 'react-spinners';
+import Cookies from 'js-cookie';
 
 const Login = () => {
   const { saveUser } = useAccountUser();
@@ -15,16 +16,30 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkAuthorizeCookie = setTimeout(() => {
-      const authorize = document.cookie.split('; ').find(row => row.startsWith('Authorize='));
-      if (authorize) {
+    const checkAuthorizeCookie = () => {
+      const token = Cookies.get('Authorize');
+      if (token) {
         navigate('/');
       } else {
         setLoading(false);
       }
-    }, 2000);
+    };
 
-    return () => clearTimeout(checkAuthorizeCookie);
+    // Create an observer instance to watch for changes in cookies
+    const observer = new MutationObserver(() => checkAuthorizeCookie());
+    
+    // Define the target node and the observer options
+    const targetNode = document;
+    const config = { attributes: true, childList: true, subtree: true };
+
+    // Start observing the target node for configured mutations
+    observer.observe(targetNode, config);
+
+    // Perform the initial check
+    checkAuthorizeCookie();
+
+    // Cleanup the observer on component unmount
+    return () => observer.disconnect();
   }, [navigate]);
 
   const handleSubmit = async (e) => {
