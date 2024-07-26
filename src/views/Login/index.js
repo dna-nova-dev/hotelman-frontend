@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../../components/navbar';
 import { useAccountUser } from '../../middleware/AccountUserContext';
 import { useNavigate } from 'react-router-dom';
 import Config from '../../Config';
+import { ClipLoader } from 'react-spinners';
 
 const Login = () => {
   const { saveUser } = useAccountUser();
@@ -10,15 +11,25 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Hook para redirigir
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAuthorizeCookie = setTimeout(() => {
+      const authorize = document.cookie.split('; ').find(row => row.startsWith('Authorize='));
+      if (authorize) {
+        navigate('/');
+      } else {
+        setLoading(false);
+      }
+    }, 2000);
+
+    return () => clearTimeout(checkAuthorizeCookie);
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log('Submitting login form...');
-    console.log('Email:', email);
-    console.log('Password:', password);
-    console.log('Remember Me:', rememberMe);
+    setLoading(true);
 
     try {
       const response = await fetch(Config.API_URL + '/login', {
@@ -27,33 +38,34 @@ const Login = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username: email, password }),
-        credentials: 'include', // Permitir el envío y recepción de cookies
+        credentials: 'include',
       });
 
-      console.log('Response Status:', response.status);
-      console.log('Response Headers:', response.headers);
-      
       if (response.ok) {
         const data = await response.json();
-        console.log('Login Successful:', data);
-        // Guardar el usuario en el contexto y localStorage/sessionStorage
         saveUser({ ...data, username: email }, rememberMe);
-        // Redirigir a la página principal o dashboard
         navigate('/');
       } else if (response.status === 401) {
-        console.log('Login Failed: Incorrect credentials');
-        // Manejar el error de autenticación
         setError('Credenciales incorrectas');
+        setLoading(false);
       } else {
-        console.log('Login Failed: Other Error', response.status);
-        // Manejar otros errores
         setError('Error en el inicio de sesión');
+        setLoading(false);
       }
     } catch (error) {
       console.error('Login Error:', error);
       setError('Error en el inicio de sesión');
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <ClipLoader size={50} color={"#123abc"} loading={loading} />
+      </div>
+    );
+  }
 
   return (
     <>
