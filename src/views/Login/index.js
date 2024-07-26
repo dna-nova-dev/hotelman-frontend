@@ -97,7 +97,7 @@ const Login = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <ClipLoader size={50} color={"#123abc"} loading={loading} />
+        <ClipLoader size={100} color="bg-primary" loading={loading} />
       </div>
     );
   }
