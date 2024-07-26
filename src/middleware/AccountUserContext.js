@@ -26,12 +26,15 @@ export const AccountUserProvider = ({ children }) => {
 
   const fetchUser = async () => {
     const token = Cookies.get('Authorize');
+    
     if (token) {
       try {
+        console.log("Token UserContext: ", token);
         const response = await fetch(Config.API_URL + '/user', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Incluir el token en el encabezado Authorization
           },
           credentials: 'include', // Enviar las credenciales con la solicitud
         });

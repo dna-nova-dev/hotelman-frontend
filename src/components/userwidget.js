@@ -31,20 +31,15 @@ const UserWidget = ({ onRegister }) => {
     if (user && hasLoaded) {
       const checkProfileImage = async () => {
         try {
-          const response = await fetch(Config.API_URL + '/profile-picture', {
-            method: 'GET',
-            credentials: 'include',
-          });
+          const response = await fetch(user.profilePicture, { method: 'HEAD' });
 
           console.log('Profile image fetch response:', response); // Log de la respuesta
 
           if (response.status === 200) {
             setProfileImageAvailable(true);
-          } else if (response.status === 404) {
-            setProfileImageAvailable(false);
           } else {
-            console.error('Unexpected response status:', response.status);
             setProfileImageAvailable(false);
+            console.error('Unexpected response status:', response.status);
           }
         } catch (error) {
           console.error('Error fetching profile image:', error);
@@ -58,7 +53,7 @@ const UserWidget = ({ onRegister }) => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch( Config.API_URL + '/logout', {
+      const response = await fetch(Config.API_URL + '/logout', {
         method: 'POST',
         credentials: 'include',
       });
@@ -114,7 +109,7 @@ const UserWidget = ({ onRegister }) => {
           ) : (
             <img
               className="h-16 w-16 ml-2 rounded-full"
-              src={profileImageAvailable ? Config.API_URL+ '/profile-picture' : '/images/guest.svg'}
+              src={profileImageAvailable ? user?.profilePicture : '/images/guest.svg'}
               alt="Profile"
             />
           )}

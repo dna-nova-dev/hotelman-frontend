@@ -15,36 +15,31 @@ const Login = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Check if the user is already authenticated
   useEffect(() => {
-    const checkAuthorizeCookie = () => {
+    const checkAuthorizeCookie = async () => {
+      console.log('Checking for authorization cookie...');
       const token = Cookies.get('Authorize');
+      console.log('Authorization cookie:', token);
+
       if (token) {
+        console.log('Token found, navigating to /');
         navigate('/');
       } else {
+        console.log('No token found, setting loading to false');
         setLoading(false);
       }
     };
 
-    // Create an observer instance to watch for changes in cookies
-    const observer = new MutationObserver(() => checkAuthorizeCookie());
-    
-    // Define the target node and the observer options
-    const targetNode = document;
-    const config = { attributes: true, childList: true, subtree: true };
-
-    // Start observing the target node for configured mutations
-    observer.observe(targetNode, config);
-
     // Perform the initial check
     checkAuthorizeCookie();
-
-    // Cleanup the observer on component unmount
-    return () => observer.disconnect();
   }, [navigate]);
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    console.log('Form submission started');
 
     try {
       const response = await fetch(Config.API_URL + '/login', {
@@ -56,21 +51,46 @@ const Login = () => {
         credentials: 'include',
       });
 
+      console.log('Fetch response status:', response.status);
+
       if (response.ok) {
         const data = await response.json();
+        console.log('Login successful, response data:', data);
+
+        // Assuming the token is in the response body
+        if (data.token) {
+          Cookies.set('Authorize', data.token, { expires: 7 }); // Set token in cookie for 7 days
+        } else {
+          console.error('Token not found in response data');
+          setError('Token no recibido después del inicio de sesión');
+        }
+
         saveUser({ ...data, username: email }, rememberMe);
-        navigate('/');
+
+        // Check for the token after login
+        const token = Cookies.get('Authorize');
+        console.log('Token after login:', token);
+
+        if (token) {
+          console.log('Token found, navigating to /');
+          navigate('/');
+        } else {
+          console.error('Token not received after login');
+          setError('Token no recibido después del inicio de sesión');
+        }
       } else if (response.status === 401) {
+        console.error('Credentials incorrect');
         setError('Credenciales incorrectas');
-        setLoading(false);
       } else {
+        console.error('Login error, status code:', response.status);
         setError('Error en el inicio de sesión');
-        setLoading(false);
       }
     } catch (error) {
       console.error('Login Error:', error);
       setError('Error en el inicio de sesión');
+    } finally {
       setLoading(false);
+      console.log('Form submission finished');
     }
   };
 
