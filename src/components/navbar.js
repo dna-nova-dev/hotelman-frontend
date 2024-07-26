@@ -54,11 +54,7 @@ const Navbar = ({ title, onRegister, fromAdmin }) => {
         )}
       </div>
       <div className="flex items-center ml-auto">
-        {loading ? (
-          <Skeleton circle={false} height={64} width={250} />
-        ) : (
-          <UserWidget isAuthenticated={isAuthenticated} onRegister={onRegister}/>
-        )}
+        <UserWidget isAuthenticated={isAuthenticated} onRegister={onRegister}/>
       </div>
     </div>
   );
