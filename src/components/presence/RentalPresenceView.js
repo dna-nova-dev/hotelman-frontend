@@ -11,7 +11,7 @@ const RentalPresenceView = () => {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {rentas.map((renta) => (
         <div key={renta.id} className="bg-gray-100 rounded-lg overflow-hidden shadow-md">
           <img src="./images/assets/profile.svg" alt="Inquilino" className="w-full h-48 object-cover mb-2" />
