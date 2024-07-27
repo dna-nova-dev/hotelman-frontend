@@ -115,7 +115,7 @@ const UserWidget = ({ onRegister }) => {
           )}
         </div>
         {dropdownOpen && (
-          <div className="absolute left-0 top-full mt-2 w-48 bg-white border border-gray-200 shadow-md z-50">
+          <div className="absolute left-0 top-full mt-2 w-full bg-white border border-gray-200 shadow-md z-50 md:w-48">
             <div onClick={handleLogout} className="flex items-center p-2 hover:bg-gray-100 cursor-pointer">
               <LogOut className="mr-2" />
               Cerrar sesión

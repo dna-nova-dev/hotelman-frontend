@@ -14,11 +14,11 @@ const SalesPoint = () => {
   const handleTabChange = (tab) => {
     dispatch(setActiveTab(tab)); // Despachar la acción para actualizar el tab activo en Redux
   };
-  /*passtrought fromAdmin value pls*/
+
   return (
     <>
       <Navbar title="inquilinos" isAuthenticated={true} fromAdmin={false} />
-      <div className="px-33 bg-gray-50">
+      <div className="px-4 lg:px-33 bg-gray-50">
         <TabNavigation
           onlyPagination={false}
           activeTab={activeTab}

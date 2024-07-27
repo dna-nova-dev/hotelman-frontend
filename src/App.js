@@ -12,6 +12,7 @@ import { AccountUserProvider } from './middleware/AccountUserContext';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode'; // Corrige la importación si es necesario
 import HelloWorld from './views/HelloWorld';
+import { ClipLoader } from 'react-spinners';
 import React from 'react';
 
 function App() {
@@ -37,7 +38,9 @@ function App() {
 
   if (initialRoute === null) {
     // Mientras estamos determinando la ruta inicial, podemos mostrar un loading spinner o algo similar
-    return <div>Loading...</div>;
+    return <div className="flex items-center justify-center min-h-screen bg-gray-50">
+    <ClipLoader size={100} color="bg-primary" loading={true} />
+  </div>;
   }
 
   return (

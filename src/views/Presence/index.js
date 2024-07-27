@@ -18,7 +18,7 @@ const Presence = () => {
   return (
     <>
       <Navbar title="presencia" isAuthenticated={true} fromAdmin={false} /> 
-      <div className="px-33 bg-gray-50">
+      <div className="px-4 lg:px-33 bg-gray-50">
         <TabNavigation
           onlyPagination={true}
           activeTab={activeTab}

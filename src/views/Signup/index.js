@@ -52,7 +52,9 @@ const Signup = () => {
     formDataToSend.append('numeroCelular', formData.numeroCelular);
     formDataToSend.append('contrasena', formData.contrasena);
     formDataToSend.append('confirmarContrasena', formData.confirmarContrasena);
-    formDataToSend.append('curp', formData.curp);
+    if (quickStart) {
+      formDataToSend.append('curp', formData.curp);
+    }
     if (profilePicture) {
       formDataToSend.append('profilePicture', profilePicture);
     }
@@ -82,13 +84,13 @@ const Signup = () => {
 
   return (
     <>
-      <Navbar title="Registro" isAuthenticated={false} onRegister={true} />
+      <Navbar title="Registro" fromAdmin={true} isAuthenticated={false} onRegister={true} />
       
       <div className="flex min-h-screen bg-gray-50 justify-center items-center px-8 sm:px-6 lg:px-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-5/6 max-w-7xl">
-          <div className="md:col-span-2 lg:col-span-2 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full max-w-7xl lg:p-20 mt-6 sm:mt-0">
+          <div className="lg:col-span-2 w-full">
             <form className="space-y-6" onSubmit={handleSubmit}>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="nombres" className="block text-sm font-medium text-gray-700">
                     Nombres *
@@ -172,12 +174,10 @@ const Signup = () => {
                     onChange={handleInputChange}
                   />
                 </div>
-              </div>
-              <div className="flex items-center mt-4">
-                <div className={`mr-4 flex-1 ${quickStart ? 'block' : 'hidden'}`}>
+                {quickStart && (
                   <div className="relative">
                     <label htmlFor="curp" className="block text-sm font-medium text-gray-700">
-                      CURP *
+                      CURP
                     </label>
                     <input
                       type="text"
@@ -191,25 +191,25 @@ const Signup = () => {
                       * Solo agregar si la cuenta es de administrador
                     </span>
                   </div>
-                </div>
-                <div className="flex items-center h-12 mt-4">
-                  <input
-                    id="quick-start"
-                    name="quick-start"
-                    type="radio"
-                    checked={quickStart}
-                    onChange={handleQuickStartChange}
-                    className="h-4 w-4 text-indigo-600 border-gray-300 rounded"
-                  />
-                  <label htmlFor="quick-start" className="ml-2 block text-sm font-medium text-gray-700">
-                    Inicio rápido
-                  </label>
-                </div>
+                )}
+              </div>
+              <div className="flex items-center mt-4">
+                <input
+                  id="quick-start"
+                  name="quick-start"
+                  type="checkbox"
+                  checked={quickStart}
+                  onChange={handleQuickStartChange}
+                  className="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                />
+                <label htmlFor="quick-start" className="ml-2 block text-sm font-medium text-gray-700">
+                  Inicio rápido
+                </label>
               </div>
               <div className='py-8'>
                 <button
                   type="submit"
-                  className="flex w-1/3 justify-center rounded-sm border border-transparent bg-primary py-2 px-4 text-md font-semibold text-white shadow-sm transition duration-300 ease-in-out hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  className="flex w-32 justify-center rounded-sm border border-transparent bg-primary py-2 px-4 text-md font-semibold text-white shadow-sm transition duration-300 ease-in-out hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
                   <img className="w-6 h-6 mr-2" src="./images/icons/signup.svg" alt="Icono Acceder" />
                   Registrar
@@ -217,58 +217,59 @@ const Signup = () => {
               </div>
             </form>
           </div>
-          <div className="md:col-span-1 lg:col-span-1 w-full">
+          <div className="lg:col-span-1 w-full">
             <div
-              className="flex flex-col h-3/5"
+              className="flex flex-col h-80"
               onDragOver={handleDragOver}
               onDrop={handleDrop}
             >
               <label className="block text-sm font-medium text-gray-700 mb-4">
                 Foto de perfil
               </label>
-              <div className="mt-1 flex flex-col justify-center items-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+              <div
+                className="mt-1 flex flex-col justify-center items-center px-6 pt-5 pb-6 border-2 border-dashed border-gray-300 rounded-md h-full relative cursor-pointer"
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+              >
                 {profilePicture ? (
-                  <>
-                    <img
-                      src={URL.createObjectURL(profilePicture)}
-                      alt="Profile Preview"
-                      className="h-40 w-40 object-cover mb-2"
-                    />
-                    <p className="text-xs text-gray-500">{profilePicture.name}</p>
-                  </>
+                  <img
+                    src={URL.createObjectURL(profilePicture)}
+                    alt="Preview"
+                    className="w-full h-full object-cover rounded-md"
+                  />
                 ) : (
                   <>
                     <svg
-                      className="mx-auto h-12 w-12 text-gray-400"
-                      stroke="currentColor"
+                      className="h-12 w-12 text-gray-400"
+                      xmlns="http://www.w3.org/2000/svg"
                       fill="none"
-                      viewBox="0 0 48 48"
-                      aria-hidden="true"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
                     >
                       <path
-                        d="M28 8H20a2 2 0 00-2 2v8H8a2 2 0 00-2 2v8a2 2 0 002 2h8v8a2 2 0 002 2h8a2 2 0 002-2v-8h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8v-8a2 2 0 00-2-2z"
-                        strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 7h18M4 7a1 1 0 00-1 1v10a1 1 0 001 1h16a1 1 0 001-1V8a1 1 0 00-1-1M12 3v4M16 7h-8"
                       />
                     </svg>
-                    <div className="mt-4 flex text-sm text-gray-600">
+                    <span className="mt-2 text-sm text-gray-600 text-center">
+                      Arrastra y suelta una imagen aquí o
+                      <input
+                        type="file"
+                        name="profilePicture"
+                        accept="image/*"
+                        onChange={handleFileUpload}
+                        id="profilePicture"
+                        className="hidden"
+                      />
                       <label
-                        htmlFor="file-upload"
-                        className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                        htmlFor="profilePicture"
+                        className="ml-1 bg-primary cursor-pointer inline-block px-4 py-2 border border-transparent rounded-md bg-white shadow-sm text-sm font-medium hover:bg-gray-100"
                       >
-                        <span>Sube una foto</span>
-                        <input
-                          id="file-upload"
-                          name="file-upload"
-                          type="file"
-                          className="sr-only"
-                          onChange={handleFileUpload}
-                        />
+                        Selecciona una
                       </label>
-                      <p className="pl-1">o arrastra y suelta</p>
-                    </div>
-                    <p className="text-xs text-gray-500">PNG, JPG, GIF hasta 10MB</p>
+                    </span>
                   </>
                 )}
               </div>

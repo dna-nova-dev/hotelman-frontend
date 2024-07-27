@@ -104,11 +104,11 @@ const Login = () => {
 
   return (
     <>
-      <Navbar title="Iniciar Sesion" isAuthenticated={false} />
+      <Navbar title="Iniciar Sesion" fromAdmin={true} isAuthenticated={false} />
       <div className="flex min-h-screen bg-gray-50">
-        <div className="flex flex-1 flex-col justify-center px-4 py-2 sm:px-6 lg:px-8 xl:px-24 lg:items-center lg:justify-start lg:pt-20">
+        <div className="flex flex-1 flex-col lg:justify-center px-4 py-2 sm:px-6 lg:px-8 xl:px-24 lg:items-center lg:justify-start lg:pt-20 lg:mt-[-124px]">
           <div className="w-full max-w-sm lg:w-96">
-            <div className="mt-1">
+            <div className="mt-[2px]"> {/* Ajuste del margen superior */}
               <form className="space-y-2" onSubmit={handleSubmit}>
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700">

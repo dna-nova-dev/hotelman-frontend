@@ -12,47 +12,47 @@ const GuestPresenceView = () => {
   ];
 
   return (
-      <div className="grid grid-cols-4 gap-4">
-        {hospedados.map((hospedado, index) => (
-          <div key={index} className="bg-gray-200 p-4 rounded-lg">
-            <div className="flex justify-between items-center mb-2">
-              <span className="flex items-center text-gray-600">
-                <DollarSign size={16} className="mr-1" />
-                {hospedado.costo}
-              </span>
-              <span className="flex items-center text-gray-600">
-                <Building size={16} className="mr-1" />
-                {hospedado.habitacion}
-              </span>
-            </div>
-            <div className="flex justify-between items-center mb-2">
-              <span className="flex items-center text-gray-600">
-                <Ruler size={16} className="mr-1" />
-                {hospedado.altura}
-              </span>
-              <span className="flex items-center text-gray-600">
-                <User size={16} className="mr-1" />
-                {hospedado.cabello}
-              </span>
-            </div>
-            <div className="flex items-center text-gray-600 mb-2">
-              <Clock size={16} className="mr-1" />
-              {hospedado.duracion}
-            </div>
-            <div className="text-xs text-gray-500 truncate mb-2">{hospedado.id}</div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">{hospedado.evento}: {hospedado.hora}</span>
-              <span className={`px-2 py-1 rounded-full text-xs ${
-                hospedado.estado === 'En habitacion' ? 'bg-yellow-300 text-yellow-800' :
-                hospedado.estado === 'Afuera' ? 'bg-green-300 text-green-800' :
-                'bg-blue-300 text-blue-800'
-              }`}>
-                {hospedado.estado}
-              </span>
-            </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+      {hospedados.map((hospedado, index) => (
+        <div key={index} className="bg-gray-200 p-4 rounded-lg shadow-md">
+          <div className="flex justify-between items-center mb-2">
+            <span className="flex items-center text-gray-600">
+              <DollarSign size={16} className="mr-1" />
+              {hospedado.costo}
+            </span>
+            <span className="flex items-center text-gray-600">
+              <Building size={16} className="mr-1" />
+              {hospedado.habitacion}
+            </span>
           </div>
-        ))}
-      </div>
+          <div className="flex justify-between items-center mb-2">
+            <span className="flex items-center text-gray-600">
+              <Ruler size={16} className="mr-1" />
+              {hospedado.altura}
+            </span>
+            <span className="flex items-center text-gray-600">
+              <User size={16} className="mr-1" />
+              {hospedado.cabello}
+            </span>
+          </div>
+          <div className="flex items-center text-gray-600 mb-2">
+            <Clock size={16} className="mr-1" />
+            {hospedado.duracion}
+          </div>
+          <div className="text-xs text-gray-500 truncate mb-2">{hospedado.id}</div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-600">{hospedado.evento}: {hospedado.hora}</span>
+            <span className={`px-2 py-1 rounded-full text-xs ${
+              hospedado.estado === 'En habitacion' ? 'bg-yellow-300 text-yellow-800' :
+              hospedado.estado === 'Afuera' ? 'bg-green-300 text-green-800' :
+              'bg-blue-300 text-blue-800'
+            }`}>
+              {hospedado.estado}
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 };
 

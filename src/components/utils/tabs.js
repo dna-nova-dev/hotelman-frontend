@@ -83,50 +83,52 @@ const TabNavigation = ({ onCreate, onlyPagination, tabs }) => {
   };
 
   return (
-    <div className="flex justify-between items-center mb-6 relative">
-      <div className="flex border-t-1 border-primary">
-        {tabs.map((tab) => (
-          <button
-            key={tab}
-            className={`font-semibold px-4 py-2 rounded-b-lg ${activeTab === tab ? 'bg-primary text-white' : 'text-primary'}`}
-            onClick={() => dispatch(setActiveTab(tab))} // Despachar la acción para cambiar el tab activo
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
-      {onCreate === true ? (
-        <div className="flex space-x-2">
-          <div className="relative ml-auto">
+    <div className="bg-gray-50">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-6 mt-4 relative">
+        <div className="flex border-t-1 border-primary mb-4 md:mb-0">
+          {tabs.map((tab) => (
             <button
-              className="p-2 bg-primary text-white rounded-md relative"
-              onClick={handleDeleteClick}
+              key={tab}
+              className={`font-semibold px-4 py-2 rounded-b-lg ${activeTab === tab ? 'bg-primary text-white' : 'text-primary'}`}
+              onClick={() => dispatch(setActiveTab(tab))} // Despachar la acción para cambiar el tab activo
             >
-              <Trash2 size={20} />
+              {tab}
             </button>
-          </div>
-          <div className="relative">
-            <button
-              className={`p-2 ${isFormComplete ? 'bg-primary' : 'bg-gray-400'} text-white rounded-md relative`}
-              onClick={handleSaveClick}
-              disabled={!isFormComplete} // Deshabilitar el botón si el formulario no está completo
-            >
-              <Save size={20} />
-            </button>
-          </div>
+          ))}
         </div>
-      ) : (
-        <div className="flex space-x-2">
-          <div className="flex justify-between items-center mb-6">
-            <div className="flex space-x-2">
-              {!onlyPagination ? <Link to="/create"><button className="bg-gray-900 text-white p-2 rounded-full"><PlusCircle size={24} /></button></Link>: <button className="bg-gray-900 text-white p-2 rounded-full"><Search size={24} /></button>}
-              <button className="bg-gray-900 text-white p-2 rounded-full"><ArrowLeft size={24} /></button>
-              <span className="bg-gray-900 text-white px-4 py-2 rounded-full flex items-center justify-center">1</span>
-              <button className="bg-gray-900 text-white p-2 rounded-full"><ArrowRight size={24} /></button>
+        {onCreate === true ? (
+          <div className="flex space-x-2">
+            <div className="relative ml-auto">
+              <button
+                className="p-2 bg-primary text-white rounded-md relative"
+                onClick={handleDeleteClick}
+              >
+                <Trash2 size={20} />
+              </button>
+            </div>
+            <div className="relative">
+              <button
+                className={`p-2 ${isFormComplete ? 'bg-primary' : 'bg-gray-400'} text-white rounded-md relative`}
+                onClick={handleSaveClick}
+                disabled={!isFormComplete} // Deshabilitar el botón si el formulario no está completo
+              >
+                <Save size={20} />
+              </button>
             </div>
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="flex space-x-2">
+            <div className="flex justify-between items-center mb-2 md:mb-0">
+              <div className="flex space-x-2">
+                {!onlyPagination ? <Link to="/create"><button className="bg-gray-900 text-white p-2 rounded-full"><PlusCircle size={24} /></button></Link> : <button className="bg-gray-900 text-white p-2 rounded-full"><Search size={24} /></button>}
+                <button className="bg-gray-900 text-white p-2 rounded-full"><ArrowLeft size={24} /></button>
+                <span className="bg-gray-900 text-white px-4 py-2 rounded-full flex items-center justify-center">1</span>
+                <button className="bg-gray-900 text-white p-2 rounded-full"><ArrowRight size={24} /></button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
