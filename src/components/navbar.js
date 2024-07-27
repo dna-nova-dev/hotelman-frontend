@@ -33,17 +33,17 @@ const Navbar = ({ title, onRegister, fromAdmin }) => {
         <div className="flex items-center md:mr-6">
         <Link to="/dashboard" className="flex items-center">
           {loading ? (
-            <Skeleton className="h-20 w-auto" />
+            <Skeleton className="h-20 ml-8 mr-8 w-40" />
           ) : (
             <img
-              className="h-20 w-auto"
+              className="h-20 ml-3 w-auto"
               src="/images/logo.svg"
               alt="Logo"
               onLoad={handleImageLoad}
             />
           )}
           {loading ? (
-            <Skeleton className="ml-6 h-8 w-48 items-center" />
+            fromAdmin && <Skeleton className="ml-12 h-8 w-48 items-center" />
           ) : (
             fromAdmin && <h2 className="ml-6 font-semibold text-gray-900 text-lg whitespace-nowrap">{title}</h2>
           )}
@@ -51,8 +51,8 @@ const Navbar = ({ title, onRegister, fromAdmin }) => {
         </div>
         <div className="hidden md:flex items-center w-full">
         {isAuthenticated && !fromAdmin && (
-          <div className="flex flex-grow">
-            <AuthenticatedActions className="mr-6" onPage={title} fromAdmin={fromAdmin} />
+          <div className="flex flex-grow ml-6">
+            <AuthenticatedActions className="mr-2" onPage={title} fromAdmin={fromAdmin} />
           </div>
         )}
           <div className="flex ml-auto">
