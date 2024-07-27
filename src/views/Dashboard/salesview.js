@@ -16,7 +16,7 @@ const SalesView = () => {
   /*passtrought fromAdmin value pls*/
   return (
     <>
-      <div className="px-33 bg-gray-50">
+      <div className="bg-gray-50">
         <TabNavigation
           onlyPagination={false}
           activeTab={activeTab}

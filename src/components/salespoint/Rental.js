@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { User, Building, Upload, Check } from 'lucide-react';
+import { User, Building, Upload } from 'lucide-react';
 import Dropzone from 'react-dropzone';
 import RentalPreview from '../utils/previews/RentalPreview';
 
@@ -67,16 +67,16 @@ const RentalManagement = ({ handleSubmit }) => {
 
   return (
     <div className="container mx-auto px-4">
-      <div className="flex">
-        <form onSubmit={handleSubmit(onSubmit)} className="w-2/3 pr-4">
-          <div className="grid grid-cols-2 gap-4">
+      <div className="flex flex-col md:flex-row">
+        <form onSubmit={handleSubmit(onSubmit)} className="w-full md:w-2/3 md:pr-4 mb-4 md:mb-0">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field name="nombres" component={renderInput} label="Nombres" type="text" required />
             <Field name="apellidos" component={renderInput} label="Apellidos" type="text" required />
             <Field name="correo" component={renderInput} label="Correo" type="email" required />
             <Field name="numeroCelular" component={renderInput} label="Número de Celular" type="tel" />
           </div>
 
-          <div className="mt-4 grid grid-cols-2 gap-4">
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block mb-1">Datos principales</label>
               <Field name="datosPrincipales1" component={renderInput} placeholder="INE" icon={User} />

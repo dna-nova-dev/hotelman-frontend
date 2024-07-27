@@ -15,8 +15,8 @@ const RentalPreview = () => {
   };
 
   return (
-    <div className="w-1/3 pl-4">
-      <label className="block font-medium mb-1">Previsualización</label>
+    <div className="w-full md:w-1/3 px-4 py-4">
+      <label className="block font-medium mb-2">Previsualización</label>
       <div className="bg-gray-100 p-4 rounded">
         {isFormFilled() ? (
           <>
@@ -31,7 +31,7 @@ const RentalPreview = () => {
             {formData.contrato ? (
               <div className="bg-white p-4 rounded">
                 <div className="flex justify-between items-center mb-2">
-                  <p className="text-sm">{formData.contrato.name}</p>
+                  <p className="text-sm truncate">{formData.contrato.name}</p>
                   <span className="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
                     PDF
                   </span>

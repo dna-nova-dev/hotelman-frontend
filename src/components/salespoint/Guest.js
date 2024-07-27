@@ -17,6 +17,7 @@ const renderInput = ({ input, meta, label, type, placeholder, icon: Icon, requir
     {meta.error && meta.touched && <span className="text-red-500 text-sm">{meta.error}</span>}
   </div>
 );
+
 const renderInputSelector = ({ input, meta, label, type, placeholder, icon: Icon, required }) => (
   <div className="relative mb-4">
     {label && <label className="block mb-1">{label}{required && ' *'}</label>}
@@ -52,19 +53,19 @@ const GuestManagement = ({ handleSubmit }) => {
 
   return (
     <div className="container mx-auto px-4">
-      <div className="flex">
-        <form onSubmit={handleSubmit(onSubmit)} className="w-2/3 pr-4">
-          <div className="grid grid-cols-2 gap-4">
+      <div className="flex flex-col md:flex-row">
+        <form onSubmit={handleSubmit(onSubmit)} className="w-full md:w-2/3 lg:pr-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Field name="email" component={renderInput} label="Correo" type="email" required />
             <Field name="phone" component={renderInput} label="Número de Celular" type="tel" required />
           </div>
 
           <div className="mt-4">
-            <div className="flex space-x-4">
-              <div className="w-1/2">
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="md:w-1/2">
                 <Field name="extraDescription" component={renderTextarea} label="Descripción física extra" rows="3" />
               </div>
-              <div className="w-1/2 space-y-2">
+              <div className="md:w-1/2 space-y-2">
                 <label className="block mb-1">Datos principales</label>
                 <Field name="name" component={renderInput} placeholder="Cabello" icon={User} />
                 <Field name="height" component={renderInput} placeholder="Altura" icon={Ruler} />
@@ -73,11 +74,10 @@ const GuestManagement = ({ handleSubmit }) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 mt-4 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 items-start">
             <Field name="price" component={renderInputSelector} label="Importe de habitación" type="number" required icon={DollarSign} />
-            <div className="col-span-2 flex items-center justify-end gap-12">
+            <div className="md:col-span-2 flex flex-col md:flex-row items-center justify-end gap-4">
               <Field name="duration" component={renderInputSelector} label="Horas de estadía" type="number" required icon={Clock} />
-              
             </div>
           </div>
         </form>

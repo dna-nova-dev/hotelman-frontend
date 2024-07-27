@@ -39,7 +39,7 @@ const CreateView = () => {
   return (
     <>
       <Navbar title="inquilinos" isAuthenticated={true} fromAdmin={false} />
-      <div className="px-33 bg-gray-50">
+      <div className="px-4 lg:px-33 bg-gray-50">
         <TabNavigation
           onCreate={true}
           tabs={['Hospedados', 'Rentas']}
