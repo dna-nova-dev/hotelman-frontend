@@ -26,11 +26,9 @@ const Dashboard = () => {
   return (
     <>
       <Navbar title="Panel de Administracion" fromAdmin={true} />
-      <div className="px-4 lg:px-33 bg-gray-50">
+      <div className="px-4 lg:px-33 xl:px-24 ml-4">
         <FloatingButtons />
-        <div className="flex-1 pl-1"> {/* Ajusta el margen para separación */}
-          <ViewComponent />
-        </div>
+        <ViewComponent />
       </div>
     </>
   );
