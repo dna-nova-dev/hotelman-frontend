@@ -65,7 +65,7 @@ const DashView = () => {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="px-4 lg:px-56 pt-6 space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <SemiCircleChart 
           data={rentasData}

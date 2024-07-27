@@ -26,7 +26,7 @@ const Dashboard = () => {
   return (
     <>
       <Navbar title="Panel de Administracion" fromAdmin={true} />
-      <div className="px-4 lg:px-56 ml-4">
+      <div className="ml-4">
         <FloatingButtons />
         <ViewComponent />
       </div>
