@@ -7,7 +7,7 @@ const GuestPreview = () => {
 
   const isFormFilled = () => {
     const { hair, height, roomNumber, price, duration } = formData;
-    return email && phone && name && height && roomNumber && price && duration;
+    return hair && height && roomNumber && price && duration;
   };
 
   return (
