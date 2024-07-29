@@ -55,11 +55,6 @@ const GuestManagement = ({ handleSubmit }) => {
     <div className="container mx-auto px-4">
       <div className="flex flex-col md:flex-row">
         <form onSubmit={handleSubmit(onSubmit)} className="w-full md:w-2/3 lg:pr-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Field name="email" component={renderInput} label="Correo" type="email" required />
-            <Field name="phone" component={renderInput} label="Número de Celular" type="tel" required />
-          </div>
-
           <div className="mt-4">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="md:w-1/2">
@@ -67,7 +62,7 @@ const GuestManagement = ({ handleSubmit }) => {
               </div>
               <div className="md:w-1/2 space-y-2">
                 <label className="block mb-1">Datos principales</label>
-                <Field name="name" component={renderInput} placeholder="Cabello" icon={User} />
+                <Field name="hair" component={renderInput} placeholder="Cabello" icon={User} />
                 <Field name="height" component={renderInput} placeholder="Altura" icon={Ruler} />
                 <Field name="roomNumber" component={renderInput} placeholder="Número de habitación" icon={Building} />
               </div>

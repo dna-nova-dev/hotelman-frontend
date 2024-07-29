@@ -15,14 +15,13 @@ const TabNavigation = ({ onCreate, onlyPagination, tabs }) => {
   const getFormDataByTab = () => {
     switch (activeTab) {
       case 'Rentas':
-        return rentalFormData;
+        return { ...rentalFormData, type: 'rental' };
       case 'Hospedados':
-        return guestFormData;
+        return { ...guestFormData, type: 'guest' };
       default:
         return null;
     }
   };
-
   const formData = getFormDataByTab();
 
   const isFormDataValid = (formData) => {

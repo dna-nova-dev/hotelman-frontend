@@ -79,21 +79,21 @@ const RentalManagement = ({ handleSubmit }) => {
           <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block mb-1">Datos principales</label>
-              <Field name="datosPrincipales1" component={renderInput} placeholder="INE" icon={User} />
-              <Field name="datosPrincipales2" component={renderInput} placeholder="Número de habitación" icon={Building} />
+              <Field name="INEString" component={renderInput} placeholder="INE" icon={User} />
+              <Field name="RoomNumber" component={renderInput} placeholder="Número de habitación" icon={Building} />
             </div>
 
             <div>
               <label className="block mb-1">Datos oficiales *</label>
               <Field
-                name="contrato"
+                name="contratoFile"
                 component={renderDropzoneInput}
                 label="Adjunta el Contrato"
                 icon={Upload}
                 accept=".pdf,.doc,.docx"
               />
               <Field
-                name="ine"
+                name="ineFile"
                 component={renderDropzoneInput}
                 label="Adjunta INE"
                 icon={Upload}
