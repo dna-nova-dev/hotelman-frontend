@@ -6,7 +6,7 @@ const GuestPreview = () => {
   const formData = useSelector(state => state.form.guest?.values || {});
 
   const isFormFilled = () => {
-    const { email, phone, name, height, roomNumber, price, duration } = formData;
+    const { hair, height, roomNumber, price, duration } = formData;
     return email && phone && name && height && roomNumber && price && duration;
   };
 
@@ -34,7 +34,7 @@ const GuestPreview = () => {
               </div>
               <div className="flex items-center space-x-1 md:space-x-2">
                 <User size={16} />
-                <span>{formData.name}</span>
+                <span>{formData.hair}</span>
               </div>
             </div>
             <div className="flex items-center space-x-2">
