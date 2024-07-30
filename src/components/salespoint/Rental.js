@@ -79,7 +79,7 @@ const RentalManagement = ({ handleSubmit }) => {
           <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block mb-1">Datos principales</label>
-              <Field name="INEString" component={renderInput} placeholder="INE" icon={User} />
+              <Field name="curp" component={renderInput} placeholder="CURP" icon={User} />
               <Field name="RoomNumber" component={renderInput} placeholder="Número de habitación" icon={Building} />
             </div>
 
