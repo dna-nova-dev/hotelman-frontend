@@ -14,7 +14,7 @@ const Signup = () => {
   });
   const [profilePicture, setProfilePicture] = useState(null);
   const [quickStart, setQuickStart] = useState(false);
-
+  console.log("HandleFileUpload:", profilePicture)
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
@@ -26,6 +26,7 @@ const Signup = () => {
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      
       setProfilePicture(file);
     }
   };
@@ -57,6 +58,7 @@ const Signup = () => {
     }
     if (profilePicture) {
       formDataToSend.append('profilePicture', profilePicture);
+      console.log("profilePicture", profilePicture)
     }
 
     try {

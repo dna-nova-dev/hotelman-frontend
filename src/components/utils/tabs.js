@@ -1,85 +1,141 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Importa useNavigate
 import { useSelector, useDispatch } from 'react-redux';
 import { setActiveTab } from '../../features/tab/tabSlice';
+import { setPaginationPage } from '../../features/pagination/paginationSlice';
 import { reset } from 'redux-form';
-import { ArrowLeft, ArrowRight, PlusCircle, Save, Search, Trash2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, PlusCircle, Save, Trash2 } from 'lucide-react';
+import Config from '../../Config';
+import { useFileContext } from '../../hooks/FileContext';
 
-const TabNavigation = ({ onCreate, onlyPagination, tabs }) => {
+const TabNavigation = ({ onCreate, onlyPagination, tabs, section }) => {
   const dispatch = useDispatch();
-  const activeTab = useSelector((state) => state.tab); // Estado del tab activo desde Redux
-  const rentalFormData = useSelector((state) => state.form.rental?.values); // Obtener datos del formulario de renta
-  const guestFormData = useSelector((state) => state.form.guest?.values); // Obtener datos del formulario de huéspedes
+  const navigate = useNavigate(); // Obtén la función de navegación
+  const activeTab = useSelector((state) => state.tab);
+  const pagination = useSelector((state) => state.pagination[section][activeTab]);
+  const [totalPages, setTotalPages] = useState(1);
   const [isFormComplete, setIsFormComplete] = useState(false);
-
-  const getFormDataByTab = () => {
-    switch (activeTab) {
-      case 'Rentas':
-        return { ...rentalFormData, type: 'rental' };
-      case 'Hospedados':
-        return { ...guestFormData, type: 'guest' };
-      default:
-        return null;
-    }
-  };
-  const formData = getFormDataByTab();
-
-  const isFormDataValid = (formData) => {
-    if (!formData) return false; // Si no hay formData, retorna falso
-    return Object.values(formData).every(value => value !== null && value !== '');
-  };
+  const [formData, setFormData] = useState(null);
+  const rentalFormData = useSelector((state) => state.form.rental?.values);
+  const guestFormData = useSelector((state) => state.form.guest?.values);
+  const { ineFile, contratoFile } = useFileContext();
 
   useEffect(() => {
-    setIsFormComplete(isFormDataValid(formData) && formData !== undefined); // Asegurar que formData no sea undefined
-  }, [formData]);
+    const fetchTotalPages = async () => {
+      try {
+        const response = await fetch(`${Config.API_URL}/clients?type=${activeTab === "Rentas" ? "rental" : "guest"}&page=${pagination}&pageSize=10`);
+        const data = await response.json();
+        setTotalPages(data.totalPages);
+      } catch (error) {
+        console.error('Error fetching total pages:', error);
+      }
+    };
 
-  // Nuevo useEffect para monitorear los datos del formulario rental en el reducer
-  useEffect(() => {
-    if (rentalFormData !== undefined) {
-      setIsFormComplete(isFormDataValid(rentalFormData));
-    } else {
-      setIsFormComplete(false);
+    fetchTotalPages();
+  }, [section, pagination, activeTab]);
+
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      dispatch(setPaginationPage({ section, tab: activeTab, page: newPage }));
     }
-  }, [rentalFormData]);
+  };
 
   const handleSaveClick = () => {
-    if (isFormDataValid(formData)) {
-      const dataToSave = getFormDataByTab(); // Obtener los datos del formulario actual
-      sendDataToAPI(dataToSave); // Enviar datos a la API
+    if (isFormComplete && formData) {
+      sendDataToAPI(formData);
     }
   };
 
   const handleDeleteClick = () => {
     if (activeTab === 'Rentas') {
-      dispatch(reset('rental')); // Limpiar datos de renta en el estado de Redux
+      dispatch(reset('rental'));
     } else if (activeTab === 'Hospedados') {
-      dispatch(reset('guest')); // Limpiar datos de huéspedes en el estado de Redux
+      dispatch(reset('guest'));
     }
     setIsFormComplete(false);
     console.log('Eliminando contenido del formulario...');
   };
 
-  const sendDataToAPI = (formData) => {
-    // Aquí deberías implementar la lógica para enviar formData a la API
-    console.log('TAB: Enviando datos a la API:', formData);
-    // Ejemplo de cómo podrías enviar datos a una API (esto es un mock)
-    /*fetch('https://api.example.com/save-data', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Respuesta de la API:', data);
-        // Aquí podrías manejar la respuesta de la API según sea necesario
-      })
-      .catch(error => {
-        console.error('Error al enviar datos a la API:', error);
-        // Aquí podrías manejar errores de envío a la API
-      });*/
+  const sendDataToAPI = async (data) => {
+    try {
+      const formData = new FormData();
+      for (const key in data) {
+        formData.append(key, data[key]);
+      }
+      console.log("INE File send to API: ", ineFile)
+      formData.append("ineFile", ineFile)
+      formData.append("contratoFile", contratoFile)
+
+      const response = await fetch(`${Config.API_URL}/create-client`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+      console.log('Respuesta de la API:', result);
+
+      if (response.ok) {
+        console.log('Datos enviados correctamente:', result);
+        navigate('/salespoint'); // Redirige a /salespoint
+      } else {
+        console.error('Error al enviar los datos:', result);
+      }
+    } catch (error) {
+      console.error('Error al enviar los datos:', error);
+    }
   };
+
+  const getFormDataByTab = () => {
+    let dataToSend;
+
+    switch (activeTab) {
+      case 'Rentas':
+        dataToSend = { ...rentalFormData, type: 'rental' };
+        break;
+      case 'Hospedados':
+        dataToSend = { ...guestFormData, type: 'guest' };
+        break;
+      default:
+        return null;
+    }
+
+    return dataToSend;
+  };
+
+  const isFormDataComplete = (data) => {
+    if (!data) return false;
+
+    const requiredFields = {
+      'Rentas': ['nombres', 'apellidos', 'correo', 'numeroCelular', 'curp', 'RoomNumber', 'ineFile'],
+      'Hospedados': ['hair', 'height', 'roomNumber', 'price', 'duration'],
+    };
+
+    const fields = requiredFields[activeTab] || [];
+    return fields.every(field => {
+      const value = data[field];
+      if (typeof value === 'string') {
+        return value.trim() !== '';
+      }
+      return value !== undefined && value !== null && value !== '';
+    });
+  };
+
+  useEffect(() => {
+    const fetchFormData = async () => {
+      const formData = getFormDataByTab();
+      setFormData(formData);
+      setIsFormComplete(isFormDataComplete(formData));
+    };
+
+    fetchFormData();
+  }, [activeTab, rentalFormData, guestFormData]);
+
+
+  useEffect(() => {
+    if (ineFile || contratoFile) {
+      console.log('Files available:', ineFile, contratoFile);
+    }
+  }, [ineFile, contratoFile]);
 
   return (
     <div className="bg-gray-50">
@@ -89,7 +145,7 @@ const TabNavigation = ({ onCreate, onlyPagination, tabs }) => {
             <button
               key={tab}
               className={`font-semibold px-4 py-2 rounded-b-lg ${activeTab === tab ? 'bg-primary text-white' : 'text-primary'}`}
-              onClick={() => dispatch(setActiveTab(tab))} // Despachar la acción para cambiar el tab activo
+              onClick={() => dispatch(setActiveTab(tab))}
             >
               {tab}
             </button>
@@ -109,7 +165,7 @@ const TabNavigation = ({ onCreate, onlyPagination, tabs }) => {
               <button
                 className={`p-2 ${isFormComplete ? 'bg-primary' : 'bg-gray-400'} text-white rounded-md relative`}
                 onClick={handleSaveClick}
-                disabled={!isFormComplete} // Deshabilitar el botón si el formulario no está completo
+                disabled={!isFormComplete}
               >
                 <Save size={20} />
               </button>
@@ -119,11 +175,29 @@ const TabNavigation = ({ onCreate, onlyPagination, tabs }) => {
           <div className="flex space-x-2">
             <div className="flex justify-between items-center mb-2 md:mb-0">
               <div className="flex space-x-2">
-                {!onlyPagination ? <Link to="/create"><button className="bg-gray-900 text-white p-2 rounded-full"><PlusCircle size={24} /></button></Link> : <button className="bg-gray-900 text-white p-2 rounded-full"><Search size={24} /></button>}
-                <button className="bg-gray-900 text-white p-2 rounded-full"><ArrowLeft size={24} /></button>
-                <span className="bg-gray-900 text-white px-4 py-2 rounded-full flex items-center justify-center">1</span>
-                <button className="bg-gray-900 text-white p-2 rounded-full"><ArrowRight size={24} /></button>
+                {!onlyPagination ? (
+                  <Link to="/create">
+                    <button className="bg-gray-900 text-white p-2 rounded-full">
+                      <PlusCircle size={24} />
+                    </button>
+                  </Link>
+                ) : null}
               </div>
+            </div>
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => handlePageChange(pagination - 1)}
+                disabled={pagination <= 1}
+              >
+                <ArrowLeft size={20} />
+              </button>
+              <span>{pagination} de {totalPages}</span>
+              <button
+                onClick={() => handlePageChange(pagination + 1)}
+                disabled={pagination >= totalPages}
+              >
+                <ArrowRight size={20} />
+              </button>
             </div>
           </div>
         )}

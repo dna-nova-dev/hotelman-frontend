@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { User, Building, Upload } from 'lucide-react';
 import Dropzone from 'react-dropzone';
 import RentalPreview from '../utils/previews/RentalPreview';
+import { useFileContext } from '../../hooks/FileContext';
 
 const renderInput = ({ input, meta, label, type, placeholder, icon: Icon, required }) => (
   <div className="relative mb-4">
@@ -27,7 +28,7 @@ const readFile = (file) => {
         name: file.name,
         fileData: reader.result,
         lastModified: file.lastModified,
-        size: file.size, // Agrega el tamaño del archivo
+        size: file.size,
       });
     };
     reader.onerror = (error) => reject(error);
@@ -35,13 +36,16 @@ const readFile = (file) => {
   });
 };
 
-const renderDropzoneInput = ({ input, meta, label, icon: Icon, accept }) => (
+const renderDropzoneInput = ({ input, meta, label, icon: Icon, accept, onChangeCallback }) => (
   <div className="relative mb-4">
     <Dropzone
       onDrop={async (acceptedFiles) => {
         const file = acceptedFiles[0];
+        if (onChangeCallback) {
+          onChangeCallback(file);
+        }
         const { fileData, name, lastModified, size } = await readFile(file);
-        input.onChange({ name, fileData, lastModified, size }); // Agrega el tamaño del archivo al onChange
+        input.onChange({ name, fileData, lastModified, size });
       }}
       accept={accept}
     >
@@ -61,8 +65,21 @@ const renderDropzoneInput = ({ input, meta, label, icon: Icon, accept }) => (
 );
 
 const RentalManagement = ({ handleSubmit }) => {
+  const { setIneFile, setContratoFile} = useFileContext(); // Usa el contexto para obtener setIneFile
+
   const onSubmit = (formData) => {
     console.log('Saved on Redux', formData);
+  };
+
+  const handleFileChange = (file) => {
+    if (setIneFile) {
+      setIneFile(file); // Llama a setIneFile con el archivo
+    }
+  };
+  const handleContractChange = (file) => {
+    if (setContratoFile) {
+      setContratoFile(file); // Llama a setIneFile con el archivo
+    }
   };
 
   return (
@@ -91,6 +108,7 @@ const RentalManagement = ({ handleSubmit }) => {
                 label="Adjunta el Contrato"
                 icon={Upload}
                 accept=".pdf,.doc,.docx"
+                onChangeCallback={handleContractChange}
               />
               <Field
                 name="ineFile"
@@ -98,6 +116,7 @@ const RentalManagement = ({ handleSubmit }) => {
                 label="Adjunta INE"
                 icon={Upload}
                 accept=".jpg,.png"
+                onChangeCallback={handleFileChange}
               />
             </div>
           </div>

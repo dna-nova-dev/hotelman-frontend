@@ -12,6 +12,7 @@
     "flowbite": "^2.4.1",
     "framer-motion": "^11.3.17",
     "js-cookie": "^3.0.5",
+    "jspdf": "^2.5.1",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.407.0",
     "react": "^18.3.1",

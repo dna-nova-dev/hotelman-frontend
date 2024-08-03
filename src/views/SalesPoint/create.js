@@ -46,6 +46,7 @@ const CreateView = () => {
           onFormSubmit={handleFormSubmit}
           rentalFormData={rentalFormData}
           guestFormData={guestFormData}
+          section={"Inquilinos"}
         />
         {activeTab === 'Rentas' ? (
           <RentalManagement onFormSubmit={handleRentalFormSave} />

@@ -31,7 +31,7 @@ const UserWidget = ({ onRegister }) => {
     if (user && hasLoaded) {
       const checkProfileImage = async () => {
         try {
-          const response = await fetch(user.profilePicture, { method: 'HEAD' });
+          const response = await fetch(user.profilePicture, { method: 'GET' });
 
           console.log('Profile image fetch response:', response); // Log de la respuesta
 

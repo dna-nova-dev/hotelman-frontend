@@ -11,6 +11,14 @@ const store = configureStore({
     floatingbuttons: floatingbuttonsReducer,
     pagination: paginationReducer
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // Ignorar ciertos valores no serializables
+        ignoredActions: ['@@redux-form/CHANGE'],
+        ignoredPaths: ['form.*'],
+      },
+    }),
 });
 
 export default store;

@@ -14,6 +14,7 @@ import { jwtDecode } from 'jwt-decode'; // Corrige la importación si es necesar
 import HelloWorld from './views/HelloWorld';
 import { ClipLoader } from 'react-spinners';
 import React from 'react';
+import { FileProvider } from './hooks/FileContext';
 
 function App() {
   const token = Cookies.get('Authorize');
@@ -44,7 +45,8 @@ function App() {
   }
 
   return (
-    <AccountUserProvider>
+    <FileProvider>
+      <AccountUserProvider>
       <Router>
         <Routes>
           {/* Rutas públicas */}
@@ -63,6 +65,7 @@ function App() {
         </Routes>
       </Router>
     </AccountUserProvider>
+    </FileProvider>
   );
 }
 
