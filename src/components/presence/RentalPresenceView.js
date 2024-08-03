@@ -61,7 +61,7 @@ const RentalPresenceView = () => {
         const { action, dateTime } = getLatestEvent(renta.history);
         return (
           <div key={renta.id} className="bg-gray-100 rounded-lg overflow-hidden shadow-md">
-            <img src={getImageSrc(renta.IneUrl)} alt="Inquilino" className="w-full h-48 object-cover mb-2" />
+            <img src={getImageSrc(renta.ineUrl)} alt="Inquilino" className="w-full h-48 object-cover mb-2" />
             <div className="px-4 py-2">
               <h3 className="font-semibold text-lg mb-2">{`${renta.nombres} ${renta.apellidos}`}</h3>
               <div className="flex justify-between items-center text-sm">
