@@ -22,6 +22,7 @@ const SalesView = () => {
           activeTab={activeTab}
           setActiveTab={handleTabChange} // Pasar la función para cambiar el tab activo
           tabs={['Hospedados', 'Rentas']}
+          section={'Inquilinos'}
         />
         {/* Renderizar el componente correspondiente según la pestaña activa */}
         {activeTab === 'Rentas' ? (

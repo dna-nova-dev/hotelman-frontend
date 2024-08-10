@@ -143,7 +143,7 @@ const RentalView = () => {
               <p>{new Date(selectedRenta.createdAt).toLocaleDateString()}</p>
             </div>
             <div className="mb-4">
-              <p className="font-bold">Estado:</p>
+              <p className="font-bold">Estado de pagos:</p>
               <p>{selectedRenta.estado || 'Pendiente'}</p>
             </div>
             <div className="flex gap-4">
