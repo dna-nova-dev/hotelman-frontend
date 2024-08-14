@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';  // Importa useNavigate
 import Navbar from '../../components/navbar';
 import Config from '../../Config';
 
@@ -14,7 +15,9 @@ const Signup = () => {
   });
   const [profilePicture, setProfilePicture] = useState(null);
   const [quickStart, setQuickStart] = useState(false);
-  console.log("HandleFileUpload:", profilePicture)
+  
+  const navigate = useNavigate();  // Inicializa useNavigate
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
@@ -73,7 +76,8 @@ const Signup = () => {
 
       const result = await response.json();
       console.log('Success:', result);
-      // Manejar el resultado de la respuesta aquí
+
+      navigate('/');  // Redirige al usuario a la página principal
     } catch (error) {
       console.error('Error:', error);
       // Manejar el error aquí
@@ -284,3 +288,5 @@ const Signup = () => {
 };
 
 export default Signup;
+
+
